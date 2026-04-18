@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Revenue Autopilot — Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <div class="layout">
+
+    <!-- Nav -->
+    <nav class="nav">
+      <div class="nav-wordmark">
+        ⚡ Revenue Autopilot
+        <span class="nav-badge">BETA</span>
+      </div>
+      <div class="nav-status">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-text">Connecting…</span>
+      </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="page-header">
+        <h1 class="page-title">Command Center</h1>
+        <p class="page-sub">Real-time adversarial scan results and concierge deployment controls.</p>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics">
+        <div class="metric-card danger">
+          <div class="metric-accent">🔴</div>
+          <div class="metric-value" id="crack-count">0</div>
+          <div class="metric-label">Logic Cracks Found</div>
+        </div>
+        <div class="metric-card warning">
+          <div class="metric-accent">⚠️</div>
+          <div class="metric-value" id="revenue-risk">$0</div>
+          <div class="metric-label">Revenue at Risk</div>
+        </div>
+        <div class="metric-card success">
+          <div class="metric-accent">✅</div>
+          <div class="metric-value" id="revenue-saved">$0</div>
+          <div class="metric-label">Revenue Saved</div>
+        </div>
+      </div>
+
+      <!-- Deploy -->
+      <div class="deploy-section">
+        <div class="deploy-copy">
+          <h2>Deploy Concierge Hot-Patch</h2>
+          <p>
+            Activates the Blue Team listener on the site. The Concierge will watch for friction events
+            and trigger the Focus Mode redemption card to save transactions in real time.
+          </p>
+          <div class="deploy-status" id="deploy-status">Standby — awaiting Red Team scan results</div>
+        </div>
+        <button id="deploy-btn" class="deploy-btn">
+          🚀 Deploy Concierge
+        </button>
+      </div>
+
+      <!-- Activity Log -->
+      <div class="log-section">
+        <div class="log-header">
+          <span class="log-heading">Red Team Activity Feed</span>
+          <span class="log-count" id="log-count">0 events</span>
+        </div>
+        <div id="log-feed" class="log-feed">
+          <div class="log-empty">
+            <span class="log-empty-icon">📡</span>
+            <span>Run the Red Team agents to populate this feed</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
