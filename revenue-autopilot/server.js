@@ -143,6 +143,40 @@ io.on('connection', (socket) => {
     const payload = await callClaudeWithFallback(frictionType, cachedData, answer);
     socket.emit('redemption_ready', { ...payload, cachedData, frictionType });
   });
+
+  socket.on('client_crack', (data) => {
+    const crack = { ...data, timestamp: new Date().toISOString() };
+    cracks.push(crack);
+    console.log(`[Backend Client WS] Crack: ${crack.type} — ${crack.description}`);
+    io.emit('crack_detected', crack);
+  });
+
+  socket.on('simulate_ab_test', async ({ proposedChange, currentRisk }) => {
+    console.log(`[Claude] PM Simulation requested: ${proposedChange}`);
+    try {
+      const pmPrompt = `You are a Principal Product Manager and Data Scientist. 
+      The current funnel has $${currentRisk} at risk due to user friction (cart abandonment, rage clicks, etc).
+      The user (a PM) proposes this change: "${proposedChange}".
+      Evaluate this proposal. Provide a realistic projected impact (e.g. "+15% conversion") and a brief 2-3 sentence explanation of the reasoning and potential risks. 
+      Format your response with markdown, using bold text for the projection metric. Do not include markdown fences.`;
+
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Claude simulation timeout (25s exceeded)')), 25000)
+      );
+
+      const fetchPromise = anthropic.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 300,
+        messages: [{ role: 'user', content: pmPrompt }],
+      });
+      
+      const response = await Promise.race([fetchPromise, timeoutPromise]);
+      socket.emit('simulation_result', { markdown: response.content[0].text });
+    } catch (err) {
+      console.error('[Claude] PM Sim error:', err.message);
+      socket.emit('simulation_result', { markdown: `**Simulation Failed**\nAn error occurred while generating the projection: ${err.message}` });
+    }
+  });
 });
 
 server.listen(3001, () => console.log('[Backend] http://localhost:3001'));

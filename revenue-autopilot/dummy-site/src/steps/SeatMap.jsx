@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const COLS        = ['A', 'B', 'C', 'D', 'E', 'F'];
-const ROWS        = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+const ROWS        = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
 const COL_X       = { A: 20, B: 57, C: 94, D: 142, E: 179, F: 216 };
 const ROW_Y_START = 44;
 const ROW_H       = 33;
@@ -18,11 +18,11 @@ export default function SeatMap({ originalSelection, selectedSeat, onSelect }) {
   const [hovered, setHovered] = useState(null);
 
   function getFill(seatId) {
-    if (MOCK_OCCUPIED.has(seatId))    return '#3a3a3c';
-    if (seatId === selectedSeat)      return '#0071e3';
-    if (seatId === originalSelection) return '#C9A84C';
-    if (seatId === hovered)           return '#d1d1d6';
-    return '#e5e5ea';
+    if (MOCK_OCCUPIED.has(seatId))    return '#9ca3af';
+    if (seatId === selectedSeat)      return '#2563eb';
+    if (seatId === originalSelection) return '#d97706';
+    if (seatId === hovered)           return '#bfdbfe';
+    return '#dbeafe';
   }
 
   function handleClick(seatId) {
@@ -30,8 +30,8 @@ export default function SeatMap({ originalSelection, selectedSeat, onSelect }) {
   }
 
   return (
-    <div className="seat-map-container">
-      <svg viewBox="0 0 260 410" width="100%" style={{ maxWidth: 260 }}>
+    <div className="seat-map-container" style={{ maxHeight: '400px', overflowY: 'auto', border: '1px solid #333', borderRadius: '8px', padding: '10px 0', background: '#1c1c1e' }}>
+      <svg viewBox={`0 0 260 ${44 + ROWS.length * 33 + 20}`} width="100%" style={{ maxWidth: 260, display: 'block', margin: '0 auto' }}>
         {COLS.map(col => (
           <text
             key={col}
@@ -39,14 +39,15 @@ export default function SeatMap({ originalSelection, selectedSeat, onSelect }) {
             y={28}
             textAnchor="middle"
             fontSize={11}
-            fill="#86868b"
+            fill="#374151"
             fontFamily="Inter, sans-serif"
+            fontWeight="600"
           >
             {col}
           </text>
         ))}
 
-        <text x={118} y={28} textAnchor="middle" fontSize={10} fill="#86868b" fontFamily="Inter, sans-serif">✈</text>
+        <text x={118} y={28} textAnchor="middle" fontSize={10} fill="#374151" fontFamily="Inter, sans-serif">✈</text>
 
         {ROWS.map((row, ri) => {
           const y = ROW_Y_START + ri * ROW_H;
@@ -56,8 +57,9 @@ export default function SeatMap({ originalSelection, selectedSeat, onSelect }) {
                 x={6}
                 y={y + SEAT_H / 2 + 4}
                 fontSize={10}
-                fill="#86868b"
+                fill="#374151"
                 fontFamily="Inter, sans-serif"
+                fontWeight="500"
               >
                 {row}
               </text>
@@ -87,22 +89,22 @@ export default function SeatMap({ originalSelection, selectedSeat, onSelect }) {
         })}
       </svg>
 
-      <div className="seat-legend">
-        <span className="legend-item">
-          <span className="legend-swatch" style={{ background: '#e5e5ea' }} />
+      <div className="seat-legend" style={{display:'flex', gap:'14px', marginTop:'12px', fontSize:'12px', color:'#374151'}}>
+        <span style={{display:'flex',alignItems:'center',gap:'5px'}}>
+          <span style={{display:'inline-block',width:12,height:12,borderRadius:3,background:'#dbeafe',border:'1px solid #93c5fd'}}/>
           Available
         </span>
-        <span className="legend-item">
-          <span className="legend-swatch" style={{ background: '#3a3a3c' }} />
+        <span style={{display:'flex',alignItems:'center',gap:'5px'}}>
+          <span style={{display:'inline-block',width:12,height:12,borderRadius:3,background:'#9ca3af'}}/>
           Occupied
         </span>
-        <span className="legend-item">
-          <span className="legend-swatch" style={{ background: '#0071e3' }} />
+        <span style={{display:'flex',alignItems:'center',gap:'5px'}}>
+          <span style={{display:'inline-block',width:12,height:12,borderRadius:3,background:'#2563eb'}}/>
           Your Choice
         </span>
         {originalSelection && (
-          <span className="legend-item">
-            <span className="legend-swatch" style={{ background: '#C9A84C' }} />
+          <span style={{display:'flex',alignItems:'center',gap:'5px'}}>
+            <span style={{display:'inline-block',width:12,height:12,borderRadius:3,background:'#d97706'}}/>
             Prior Pick
           </span>
         )}
